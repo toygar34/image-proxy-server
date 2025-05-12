@@ -36,14 +36,18 @@ app.post("/upload", async (req, res) => {
     const fileName = `uploads/proxied-images/${uuidv4()}${fileExt}`;
     const file = bucket.file(fileName);
 
+    const token = uuidv4();
     await file.save(buffer, {
       metadata: {
         contentType: response.headers.get("content-type"),
-        firebaseStorageDownloadTokens: uuidv4()
+        metadata: {
+          firebaseStorageDownloadTokens: token
+        }
       }
     });
-
-    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media`;
+    
+    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media&token=${token}`;
+    
 
     res.status(200).json({ imageUrl: publicUrl });
   } catch (err) {
