@@ -7,6 +7,19 @@ const bucket = require("./firebase");
 const app = express();
 app.use(express.json());
 
+// ✅ CORS middleware
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
+// ✅ Preflight
+app.options("*", (req, res) => {
+  res.sendStatus(200);
+});
+
 app.post("/upload", async (req, res) => {
   const imageUrl = req.query.url;
   if (!imageUrl) return res.status(400).send("Image URL required");
@@ -43,7 +56,6 @@ app.post("/upload", async (req, res) => {
     res.status(500).send("Upload failed");
   }
 });
-
 
 app.listen(3000, () => {
   console.log("✅ Image proxy server running at http://localhost:3000");
