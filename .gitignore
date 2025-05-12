@@ -1,0 +1,16 @@
+# Firebase admin key
+serviceAccountKey.json
+
+# Node modules
+node_modules/
+
+# Env config (isteğe bağlı)
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac OS
+.DS_Store
