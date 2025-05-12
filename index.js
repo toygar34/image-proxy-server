@@ -3,22 +3,17 @@ const fetch = require("node-fetch");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 const bucket = require("./firebase");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 
-// ✅ CORS middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
-
-// ✅ Preflight
-app.options("*", (req, res) => {
-  res.sendStatus(200);
-});
+// ✅ Güvenli CORS middleware
+app.use(cors({
+  origin: "*", // dilersen domain belirtebilirsin
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 app.post("/upload", async (req, res) => {
   const imageUrl = req.query.url;
@@ -58,5 +53,5 @@ app.post("/upload", async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("✅ Image proxy server running at http://localhost:3000");
+  console.log("✅ Image proxy server running on port 3000");
 });
