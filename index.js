@@ -22,9 +22,10 @@ app.post("/upload", async (req, res) => {
   try {
     const response = await fetch(imageUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0",
-        "Referer": "https://bundle.app",
-      },
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Referer": imageUrl, // Hedef sitenin kendi URL'si
+        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+      }
     });
 
     if (!response.ok) {
